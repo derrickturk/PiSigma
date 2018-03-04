@@ -19,7 +19,9 @@ instance Error EvalErr where
 
 
 newtype Eval a = Eval { unEval :: ReaderT Constrs (StateT EnvEntries (ErrorT EvalErr Identity)) a }
-  deriving ( Monad
+  deriving ( Functor
+           , Applicative
+           , Monad
            , MonadError EvalErr
            , MonadState EnvEntries
            , MonadReader Constrs)

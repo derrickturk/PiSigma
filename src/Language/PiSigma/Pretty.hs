@@ -10,6 +10,7 @@ module Language.PiSigma.Pretty
   , fromPretty )
   where
 
+import Prelude hiding ((<$>))
 import Control.Monad.Error
 import Text.PrettyPrint.MPPPC.OneDim
   hiding

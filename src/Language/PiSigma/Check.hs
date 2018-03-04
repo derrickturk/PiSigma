@@ -5,6 +5,8 @@ module Language.PiSigma.Check
   , infer )
   where
 
+import Prelude hiding ((<$>))
+
 import Control.Arrow
   ( first )
 import Control.Monad.Error

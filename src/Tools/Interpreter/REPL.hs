@@ -11,12 +11,15 @@ module Tools.Interpreter.REPL
   , runREPL )
   where
 
-import Prelude hiding (catch)
-import Control.Monad.Error
-import Control.Monad.State
+import Prelude hiding (catch, (<$>))
+
+import Control.Monad.State.Strict
 import Control.Monad.Trans
+import Control.Monad.Error hiding (MonadException)
+
 import Data.Char
 import qualified Data.List as List
+import System.Console.Haskeline.MonadException
 import System.Console.Haskeline.Class
 import System.IO
 import Data.Version (showVersion)
@@ -40,10 +43,12 @@ import Paths_pisigma
 
 -- * Instances needed for newtype deriving
 
+{--
 instance (Error e, MonadException m) => MonadException (ErrorT e m) where
   catch m = ErrorT . catch (runErrorT m) . (runErrorT .)
   block   = mapErrorT block
   unblock = mapErrorT unblock
+--}
 
 instance (Error e, MonadHaskeline m) => MonadHaskeline (ErrorT e m) where
   getInputLine = lift . getInputLine
@@ -56,7 +61,9 @@ instance (Error e, MonadHaskeline m) => MonadHaskeline (ErrorT e m) where
 -- | The REPL monad has exceptions, a line editor with history using
 -- Haskeline, and state.
 newtype REPL a = REPL { unREPL :: ErrorT REPLError (HaskelineT (StateT REPLState IO)) a }
-  deriving ( Monad
+  deriving ( Functor
+           , Applicative
+           , Monad
            , MonadException
            , MonadError REPLError
            , MonadHaskeline

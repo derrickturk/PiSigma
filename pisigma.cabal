@@ -29,20 +29,22 @@ flag debug
   default:          False
 
 library
-  build-depends:    array           >= 0.2   && < 0.4,
-                    base            >= 4.0   && < 5.0,
-                    bytestring      >= 0.9   && < 1.0,
-                    haskeline       >= 0.6   && < 0.7,
-                    haskeline-class >= 0.6.1 && < 0.7,
-                    mpppc           >= 0.1.0 && < 0.2,
-                    mtl             >= 1.1   && < 1.2,
-                    parsec          >= 3.0   && < 4.0,
-                    text            >= 0.5   && < 0.6,
-                    utf8-string     >= 0.3.5 && < 0.4,
-                    containers      >= 0.2   && < 0.4
+  build-depends:    array          
+                  , base           
+                  , bytestring     
+                  , haskeline
+                  , haskeline-class
+                  , mtl            
+                  , parsec         
+                  , text           
+                  , utf8-string    
+                  , containers     
+                  , mpppc
 
   exposed-modules:  Language.PiSigma.Check
+                    Language.PiSigma.Constraints
                     Language.PiSigma.Equality
+                    Language.PiSigma.Eval
                     Language.PiSigma.Evaluate
                     Language.PiSigma.Normalise
                     Language.PiSigma.Lexer
@@ -51,6 +53,9 @@ library
                     Language.PiSigma.Syntax
                     Language.PiSigma.Util.String.Internal
                     Language.PiSigma.Util.String.Parser
+
+  extensions:       FlexibleInstances
+                  , FlexibleContexts
 
   if flag(debug)
     ghc-options:    -Wall --enable-library-profiling -auto -funbox-strict-fields
@@ -70,10 +75,15 @@ executable pisigma
 
   hs-source-dirs:   src
 
+  extensions:       FlexibleInstances
+                  , FlexibleContexts
+
   main-is:          Tools/Interpreter/Main.hs
 
   other-modules:    Language.PiSigma.Check
+                    Language.PiSigma.Constraints
                     Language.PiSigma.Equality
+                    Language.PiSigma.Eval
                     Language.PiSigma.Evaluate
                     Language.PiSigma.Normalise
                     Language.PiSigma.Lexer
